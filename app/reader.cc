@@ -272,7 +272,7 @@ void Reader::FindClosestWords(
     // sort distances list by distance
     stable_sort(dists.rbegin(), dists.rend(),
                 [](decltype(*dists.cbegin()) lhs, decltype(lhs) rhs) {
-                  return lhs.second > rhs.second;
+                  return lhs.second < rhs.second;
                 });
 
     // return top_k results

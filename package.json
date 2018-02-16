@@ -1,6 +1,6 @@
 {
   "name": "node-word2vec-reader",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Word2vec Model Reader for node client",
   "main": "app/index.js",
   "scripts": {
