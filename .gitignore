@@ -13,3 +13,5 @@ sftp-config.json
 *.iws
 *.idea
 build/
+coverage/
+.nyc_output/

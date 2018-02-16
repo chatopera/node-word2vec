@@ -1,0 +1,42 @@
+language: node_js
+node_js:
+  - "7"
+dist: trusty
+
+os:
+  - linux
+
+sudo: required
+
+cache:
+  directories:
+    - node_modules
+
+addons:
+    apt:
+        sources:
+            - llvm-toolchain-precise
+            - ubuntu-toolchain-r-test
+        packages:
+            - clang-3.7
+            - g++-5
+            - gcc-5
+
+script:
+  - echo $TRAVIS_OS_NAME
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - gcc --version
+  - node --version
+  - npm --version
+  - ./admin/test.sh
+
+after_success:
+  - npm run coverage
+  - npm i codecov
+  - codecov
+
+stages:
+  - test
+  - pack
+  - name: deploy
+    if: branch =~ ^(master|v\d+\.\d+)

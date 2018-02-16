@@ -1,11 +1,12 @@
 {
   "name": "node-word2vec-reader",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Word2vec Model Reader for node client",
   "main": "app/index.js",
   "scripts": {
     "test": "ava app/test",
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "coverage": "node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=text-lcov npm test"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   },
   "homepage": "https://github.com/Samurais/node-word2vec#readme",
   "devDependencies": {
-    "ava": "^0.25.0"
+    "ava": "^0.25.0",
+    "nyc": "^11.4.1"
   },
   "dependencies": {
     "bindings": "^1.3.0",
