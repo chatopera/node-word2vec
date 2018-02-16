@@ -91,6 +91,12 @@ word2vec.bow(["飞机", "航母"])
 **[更多详情](./app/test/index.js)。**
 
 
+# Contribute
+```
+admin/rebuilt.sh # 重新编译C++ Addon
+admin/test.sh # 单元测试
+```
+
 # Word2vec
 word2vec是用来训练词向量模型的工具，为了方便，将word2vec也放在代码库中。编译和使用word2vec：
 ```
