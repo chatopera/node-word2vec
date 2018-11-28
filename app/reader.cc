@@ -69,15 +69,19 @@ void Reader::Init(v8::Local<v8::Object> exports) {
 }
 
 void Reader::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+  Isolate* isolate = info.GetIsolate();
+  Local<Context> context = isolate->GetCurrentContext();
   if (info.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
     Reader* obj = new Reader();
     obj->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   } else {
+    const int argc = 1;
+    Local<Value> argv[argc] = { info[0] };
     // Invoked as plain function `MyObject(...)`, turn into construct call.
     v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-    info.GetReturnValue().Set(cons->NewInstance());
+    info.GetReturnValue().Set(cons->NewInstance(context, argc, argv).ToLocalChecked());
   }
 }
 
@@ -146,7 +150,7 @@ void Reader::Initialize(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   std::cout << "reader.cc << init done." << endl;
 
   v8::Local<v8::Function> cb = info[1].As<v8::Function>();
-  const unsigned argc = 0;
+  const unsigned argc = 1;
   v8::Local<v8::Value> argv[argc] = {};
   Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, argc, argv);
 };
