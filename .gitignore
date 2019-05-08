@@ -15,5 +15,5 @@ sftp-config.json
 build/
 coverage/
 .nyc_output/
-package-lock.json
 .vscode/
+package-lock.json
