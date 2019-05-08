@@ -16,6 +16,7 @@
 #include <vector>
 #include <sstream>
 #include <random>
+#include <iostream>
 #include <cctype> // for isspace
 #include <string>
 
@@ -52,9 +53,11 @@ std::string trim(std::string str) {
 std::string to_string(const vector<float>& v0) {
     std::stringstream s;
     s << "[ ";
-    for (const auto& f : v0) {
-        s << f;
-        if (f != v0.back()) s << ",";
+    for(vector<float>::const_iterator it = v0.begin(); it != v0.end(); it++){
+        s << *it;
+        if((it + 1) != v0.end()){
+            s << ",";
+        }
     }
     s << "]";
     return s.str();
@@ -63,11 +66,10 @@ std::string to_string(const vector<float>& v0) {
 std::string to_string(const vector<std::string>& v0) {
     std::stringstream s;
     s << "[ ";
-    for (const auto& f : v0) {
-        s << "\"";
-        s << f;
-        s << "\"";
-        if (f != v0.back()) s << ",";
+    for(vector<std::string>::const_iterator it = v0.begin(); it != v0.end(); it++){
+        s << "\"" << *it << "\"";
+        if((it + 1) != v0.end())
+            s << ",";
     }
     s << "]";
     return s.str();

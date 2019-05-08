@@ -206,9 +206,8 @@ void Reader::GetVector(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     if (it != (obj->word_vectors_norm)->end()) {
       v = it->second;
       vector_str = to_string(v);
-      // std::cout << "Resolve vector:" << vector_str << endl;
     } else {
-      // std::cout << "Could not resolve vector, oov." << endl;
+      std::cout << "word2vec >> Could not resolve vector, oov of [" << word << "]" << endl;
       vector_str = "[]";
       rc = 1;  // OOV
     }
@@ -218,7 +217,6 @@ void Reader::GetVector(const Nan::FunctionCallbackInfo<v8::Value>& info) {
     Nan::MaybeLocal<v8::Value> vectorJsonValue =
         NanJSON.Parse(Nan::New(vector_str).ToLocalChecked());
     vectorJsonArray = vectorJsonValue.ToLocalChecked();
-
     v8::Local<v8::Function> cb = info[1].As<v8::Function>();
     const unsigned argc = 2;
     v8::Local<v8::Value> argv[argc] = {Nan::New(rc), vectorJsonArray};

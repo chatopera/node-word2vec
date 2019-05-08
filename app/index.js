@@ -42,36 +42,21 @@ Word2vec.prototype.init = function(word2vecModelPath) {
 Word2vec.prototype.nearby = function(word, topk = 10) {
     let deferred = Q.defer();
     try {
-        Q.fcall(() => {
-                if (this.isInited)
-                    return;
-                if (!this.word2vecModelPath)
-                    throw new Error("Empty Word2vec Model Path");
-
-                return this.init();
-            })
-            .then(() => {
-                this.R.findClosestWords(word, topk, (rc, data) => {
-                    if (rc === 0) {
-                        deferred.resolve(data);
-                    } else if (rc === 1) {
-                        deferred.reject({
-                            rc: rc,
-                            error: "Exception: Out of vocabulary."
-                        })
-                    } else {
-                        deferred.reject({
-                            rc: 2,
-                            error: "unknown error."
-                        })
-                    }
-                });
-            }, (err) => {
+        this.R.findClosestWords(word, topk, (rc, data) => {
+            if (rc === 0) {
+                deferred.resolve(data);
+            } else if (rc === 1) {
                 deferred.reject({
-                    rc: 3,
-                    error: "empty word."
-                });
-            });
+                    rc: rc,
+                    error: "Exception: Out of vocabulary."
+                })
+            } else {
+                deferred.reject({
+                    rc: 2,
+                    error: "unknown error."
+                })
+            }
+        });
     } catch (e) {
         deferred.reject({
             rc: 4,
@@ -83,41 +68,24 @@ Word2vec.prototype.nearby = function(word, topk = 10) {
 
 Word2vec.prototype.v = function(word) {
     let deferred = Q.defer();
-    debug("vector: %s", word);
     try {
-        Q.fcall(() => {
-                if (this.isInited)
-                    return;
-                if (!this.word2vecModelPath)
-                    throw new Error("Empty Word2vec Model Path");
-
-                return this.init();
-            })
-            .then(() => {
-                this.R.getVector(word, (rc, v) => {
-                    debug("vector getVector: %s, %j", rc, v)
-                    if (rc == 0) {
-                        deferred.resolve(v);
-                    } else if (rc == 1) {
-                        deferred.reject({
-                            rc: 1,
-                            error: `warning: ${word} word not found`
-                        });
-                    } else {
-                        deferred.reject({
-                            rc: 2,
-                            error: "empty word"
-                        });
-                    }
-                })
-            }, (err) => {
-                debug("vector error:", err)
+        this.R.getVector(word, (rc, v) => {
+            if (rc == 0) {
+                deferred.resolve(v);
+            } else if (rc == 1) {
                 deferred.reject({
-                    rc: 3,
-                    error: "unknown error."
-                })
-            })
+                    rc: 1,
+                    error: `warning: ${word} word not found`
+                });
+            } else {
+                deferred.reject({
+                    rc: 2,
+                    error: "empty word"
+                });
+            }
+        })
     } catch (e) {
+        debug("v error: %o", e);
         deferred.reject({
             rc: 4,
             error: "init fails."
@@ -133,9 +101,9 @@ Word2vec.prototype.v = function(word) {
  * @return {[type]}       [description]
  */
 Word2vec.prototype.vectors = function(words) {
-    var deferred = Q.defer();
-    var promises = [];
-    var vectors = [];
+    const deferred = Q.defer();
+    const promises = [];
+    const vectors = [];
     for (let x in words) {
         promises.push(this.v(words[x]));
     }
@@ -145,7 +113,7 @@ Word2vec.prototype.vectors = function(words) {
                 if (results[x]["state"] === "fulfilled") {
                     vectors.push(results[x]["value"]);
                 } else {
-                    console.warn("_vectors error:", JSON.stringify(results[x]));
+                    debug("_vectors error: %j", results[x]);
                 }
             }
 
@@ -166,6 +134,7 @@ Word2vec.prototype.vectors = function(words) {
  */
 Word2vec.prototype.bow = function(words) {
     let deferred = Q.defer();
+    debug("bow words: %j", words);
     this.vectors(words)
         .then((vectors) => {
             // bag of words
@@ -181,8 +150,10 @@ Word2vec.prototype.bow = function(words) {
             }
             if (v.length > 0)
                 return deferred.resolve(v);
+            debug("bow get length 0");
             deferred.reject("Empty vector after Bag of Words:" + sen);
         }, (err) => {
+            debug("bow get error %o", err);
             deferred.reject(err);
         });
 
