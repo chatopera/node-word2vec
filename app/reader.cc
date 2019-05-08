@@ -1,5 +1,6 @@
-/* Copyright (C) 2019 Hai Liang Wang<hailiang.hl.wang@gmail.com> 
- * - All Rights Reserved
+/**
+ * Copyright (C) 2019 Hai Liang Wang<hailiang.hl.wang@gmail.com> 
+ * All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the GPL 3.0 license, which unfortunately won't be
  * written for another century.
@@ -79,6 +80,8 @@ void Reader::Init(v8::Local<v8::Object> exports)
 
 void Reader::New(const Nan::FunctionCallbackInfo<v8::Value> &info)
 {
+    Isolate *isolate = info.GetIsolate();
+    Local<Context> context = isolate->GetCurrentContext();
     if (info.IsConstructCall())
     {
         // Invoked as constructor: `new MyObject(...)`
@@ -88,9 +91,11 @@ void Reader::New(const Nan::FunctionCallbackInfo<v8::Value> &info)
     }
     else
     {
+        const int argc = 1;
+        Local<Value> argv[argc] = {info[0]};
         // Invoked as plain function `MyObject(...)`, turn into construct call.
         v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-        info.GetReturnValue().Set(cons->NewInstance());
+        info.GetReturnValue().Set(cons->NewInstance(context, argc, argv).ToLocalChecked());
     }
 }
 
