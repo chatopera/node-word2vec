@@ -1,4 +1,5 @@
 # node-word2vec
+
 Word2vec model reader for Node.js Client.
 
 ![](https://camo.githubusercontent.com/ae91a5698ad80d3fe8e0eb5a4c6ee7170e088a7d/687474703a2f2f37786b6571692e636f6d312e7a302e676c622e636c6f7564646e2e636f6d2f61692f53637265656e25323053686f74253230323031372d30342d30342532306174253230382e32302e3437253230504d2e706e67)
@@ -11,21 +12,22 @@ var Word2vec = require("node-word2vec-reader");
 var word2vec = new Word2vec();
 ```
 
-**为了保证性能，使用Node.js [C ++ Addon模块](https://github.com/Samurais/node-word2vec/tree/master/app)管理词表和加载模型。**
+**为了保证性能，使用 Node.js [C ++ Addon 模块](https://github.com/Samurais/node-word2vec/tree/master/app)管理词表和加载模型。**
 
 # APIs
 
-**所有接口都返回Promise**。
+**所有接口都返回 Promise**。
 
 ## word2vec#init(model_file_path)
 
 ```
-word2vec.init(model_file_path); 
+word2vec.init(model_file_path);
 ```
 
-实例化后的word2vec 先进行初始化，```model_file_path```是通过[word2vec](app/google)训练后得到的模型。
+实例化后的 word2vec 先进行初始化，`model_file_path`是通过[word2vec](app/google)训练后得到的模型。
 
 ## word2vec#getVocabSize()
+
 获得词表的大小
 
 ```
@@ -35,8 +37,8 @@ word2vec.getVocabSize()
         })
 ```
 
-
 ## word2vec#getEmbeddingDim()
+
 获得词向量的维度
 
 ```
@@ -47,6 +49,7 @@ word2vec.getEmbeddingDim()
 ```
 
 ## word2vec#v(word)
+
 获得一个词语的向量
 
 ```
@@ -57,7 +60,8 @@ word2vec.v("飞机")
 ```
 
 ## word2vec#nearby(word, [topK])
-获得一个词语最近的k个词语及分数。
+
+获得一个词语最近的 k 个词语及分数。
 
 ```
 word2vec.nearby("飞机", 10)
@@ -66,11 +70,12 @@ word2vec.nearby("飞机", 10)
         })
 ```
 
-* 返回值 JSONArray
+- 返回值 JSONArray
 
-```[[words], [scores]]```，包含两个列表，第一个是词语，第二个是对应位置词语的距离分数，同样是在[0~1]区间，越接近于1越相似。
+`[[words], [scores]]`，包含两个列表，第一个是词语，第二个是对应位置词语的距离分数，同样是在[0~1]区间，越接近于 1 越相似。
 
 比如：
+
 ```
 [
     ["股市","股价","股票市场","股灾","楼市","股票","香港股市","行情","恒指","金融市场"],
@@ -79,7 +84,8 @@ word2vec.nearby("飞机", 10)
 ```
 
 ## word2vec#bow(words)
-对传入的词语的列表返回BoW向量。
+
+对传入的词语的列表返回 BoW 向量。
 
 ```
 word2vec.bow(["飞机", "航母"])
@@ -90,15 +96,17 @@ word2vec.bow(["飞机", "航母"])
 
 **[更多详情](./app/test/index.js)。**
 
-
 # Contribute
+
 ```
 admin/rebuilt.sh # 重新编译C++ Addon
 admin/test.sh # 单元测试
 ```
 
 # Word2vec
-word2vec是用来训练词向量模型的工具，为了方便，将word2vec也放在代码库中。编译和使用word2vec：
+
+word2vec 是用来训练词向量模型的工具，为了方便，将 word2vec 也放在代码库中。编译和使用 word2vec：
+
 ```
 cd app/google
 make clean
@@ -106,15 +114,16 @@ make
 ./word2vec
 ```
 
-关于Word2vec更多信息，参考 [word2vec/google/README](app/word2vec/google/README.txt)。
+关于 Word2vec 更多信息，参考 [word2vec/google/README](app/word2vec/google/README.txt)。
 
 # Give credits to
 
 [ofxMSAWord2Vec](https://github.com/memo/ofxMSAWord2Vec)
 
 # LICENSE
+
 Word2vec model reader for Node.js Client.
-Copyright (C) 2018  Hai Liang Wang<hailiang.hl.wang@gmail.com>
+Copyright (C) 2018 Hai Liang Wang<hailiang.hl.wang@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -123,9 +132,13 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+[![chatoper banner][co-banner-image]][co-url]
+
+[co-banner-image]: https://user-images.githubusercontent.com/3538629/42383104-da925942-8168-11e8-8195-868d5fcec170.png
+[co-url]: https://www.chatopera.com

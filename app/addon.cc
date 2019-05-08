@@ -12,8 +12,9 @@
 
 using namespace synonyms::word2vec;
 
-void InitAll(v8::Local<v8::Object> exports) {
-  Reader::Init(exports);
+void InitAll(v8::Local<v8::Object> exports)
+{
+    Reader::Init(exports);
 }
 
 NODE_MODULE(addon, InitAll)
